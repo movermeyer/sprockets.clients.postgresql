@@ -1,0 +1,3 @@
+queries>=1.2.1
+sprockets>=0.1.1
+tornado>=4.0.1
