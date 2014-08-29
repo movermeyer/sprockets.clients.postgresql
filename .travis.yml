@@ -1,0 +1,25 @@
+%YAML 1.1
+---
+language: python
+python:
+  - 2.6
+  - 2.7
+  - pypy
+  - 3.2
+  - 3.3
+  - 3.4
+install:
+  - pip install -r dev-requirements.txt
+  - pip install -e .
+script: nosetests
+after_success:
+  - coveralls
+deploy:
+  provider: pypi
+  user: sprockets
+  on:
+    python: 2.7
+    tags: true
+    all_branches: true
+  password:
+    secure: VPkJqftgZd0dBxovghtRuKSeOL8dNia1eukayXAYVFfdNpP5zQktFSVpdrME3xO0E4ocw0whVHs4Q27Em9ccazlUUJq0FeNOq2jLJoaB9LkFWP2fUAS3kZwQtW+d06k60IuaLdqA94y0zvezjEVIPL8BtoZwZE7nm+Wpy990LXw=
