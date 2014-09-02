@@ -58,7 +58,7 @@ setuptools.setup(
     packages=['sprockets',
               'sprockets.clients',
               'sprockets.clients.postgresql'],
-    package_data={'': ['LICENSE', 'README.md']},
+    package_data={'': ['LICENSE', 'README.rst']},
     include_package_data=True,
     namespace_packages=['sprockets',
                         'sprockets.clients'],
