@@ -1,7 +1,7 @@
 sprockets.clients.postgresql
 ============================
 The ``sprockets.clients.postgresql`` package wraps the
-`Queries <http://queries.readthedocs.org>`_ package providing environment
+`queries <http://queries.readthedocs.org>`_ package providing environment
 variable based configuration for connecting to PostgreSQL.
 
 |Version| |Downloads| |Status| |Coverage| |License|
@@ -14,7 +14,7 @@ and can be installed via ``pip`` or ``easy_install``:
 
 .. code:: bash
 
-  pip install sprockets.clients.postgresql
+    pip install sprockets.clients.postgresql
 
 Documentation
 -------------
@@ -22,7 +22,7 @@ https://sprocketsclientspostgresql.readthedocs.org
 
 Requirements
 ------------
--  `queries <https://github.com/gmr/queries>`_
+-  `queries`_
 -  `sprockets <https://github.com/sprockets/sprockets>`_
 
 Example
