@@ -1,6 +1,6 @@
 """
-PostgreSQL Session Classes
-==========================
+PostgreSQL Session API
+======================
 The Session classes wrap the Queries :py:class:`Session <queries.Session>` and
 :py:class:`TornadoSession <queries.tornado_session.TornadoSession>` classes
 providing environment variable based configuration.
@@ -30,7 +30,7 @@ The uri ``postgresql://bar:baz@foodb:6000/foo`` will be used when creating the
 instance of :py:class:`queries.Session`.
 
 """
-version_info = (1, 0, 0)
+version_info = (1, 0, 1)
 __version__ = '.'.join(str(v) for v in version_info)
 
 import logging
@@ -43,6 +43,26 @@ from queries import tornado_session
 _ARGUMENTS = ['host', 'port', 'dbname', 'user', 'password']
 
 LOGGER = logging.getLogger(__name__)
+
+
+# For ease of access to different cursor types
+from queries import DictCursor
+from queries import NamedTupleCursor
+from queries import RealDictCursor
+from queries import LoggingCursor
+from queries import MinTimeLoggingCursor
+
+# Expose exceptions so clients do not need to import queries as well
+from queries import DataError
+from queries import DatabaseError
+from queries import IntegrityError
+from queries import InterfaceError
+from queries import InternalError
+from queries import NotSupportedError
+from queries import OperationalError
+from queries import ProgrammingError
+from queries import QueryCanceledError
+from queries import TransactionRollbackError
 
 
 def _get_uri(dbname):

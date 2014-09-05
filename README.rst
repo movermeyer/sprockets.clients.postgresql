@@ -23,7 +23,6 @@ https://sprocketsclientspostgresql.readthedocs.org
 Requirements
 ------------
 -  `queries`_
--  `sprockets <https://github.com/sprockets/sprockets>`_
 
 Example
 -------
