@@ -4,7 +4,7 @@ import setuptools
 
 setuptools.setup(
     name='sprockets.clients.postgresql',
-    version='1.0.0',
+    version='1.0.1',
     description=('PostgreSQL client library wrapper providing environment '
                  'variable based configuration'),
     long_description=codecs.open('README.rst', encoding='utf-8').read(),
