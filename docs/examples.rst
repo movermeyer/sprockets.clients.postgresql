@@ -9,12 +9,9 @@ PostgreSQL on localhost to the ``postgres`` database and issues a query.
 
     from sprockets.clients import postgresql
 
-    os.environ['POSTGRES_HOST'] = 'localhost'
-    os.environ['POSTGRES_USER'] = 'postgres'
-    os.environ['POSTGRES_PORT'] = 5432
-    os.environ['POSTGRES_DBNAME'] = 'postgres'
+    os.environ['PGSQL'] = 'postgresql://postgres@localhost:5432/postgres'
 
-    session = postgresql.Session('postgres')
+    session = postgresql.Session()
     result = session.query('SELECT 1')
     print(repr(result))
 
@@ -30,15 +27,12 @@ class in a Tornado :py:class:`RequestHandler <tornado.web.RequestHandler>`.
     from sprockets.clients import postgresql
     from tornado import web
 
-    os.environ['POSTGRES_HOST'] = 'localhost'
-    os.environ['POSTGRES_USER'] = 'postgres'
-    os.environ['POSTGRES_PORT'] = 5432
-    os.environ['POSTGRES_DBNAME'] = 'postgres'
+    os.environ['PGSQL_FOO'] = 'postgresql://postgres@localhost:5432/foo'
 
     class RequestHandler(web.RequestHandler):
 
         def initialize(self):
-            self.session = postgresql.TornadoSession('postgres')
+            self.session = postgresql.TornadoSession('foo')
 
         @gen.coroutine
         def get(self, *args, **kwargs):

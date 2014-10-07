@@ -26,8 +26,8 @@ Requirements
 
 Example
 -------
-The following example sets the environment variables for connecting to
-PostgreSQL on localhost to the ``postgres`` database and issues a query.
+The following example sets the environment variable for connecting to
+PostgreSQL on localhost to the ``production`` database and issues a query.
 
 .. code:: python
 
@@ -35,12 +35,9 @@ PostgreSQL on localhost to the ``postgres`` database and issues a query.
 
     from sprockets.clients import postgresql
 
-    os.environ['POSTGRES_HOST'] = 'localhost'
-    os.environ['POSTGRES_USER'] = 'postgres'
-    os.environ['POSTGRES_PORT'] = 5432
-    os.environ['POSTGRES_DBNAME'] = 'postgres'
+    os.environ['PGSQL_PROD'] = 'postgresql://postgres@localhost:5432/production'
 
-    session = postgresql.Session('postgres')
+    session = postgresql.Session('prod')
     result = session.query('SELECT 1')
     print(repr(result))
 
