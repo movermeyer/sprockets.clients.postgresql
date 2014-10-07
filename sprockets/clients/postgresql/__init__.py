@@ -5,19 +5,18 @@ The Session classes wrap the Queries :py:class:`Session <queries.Session>` and
 :py:class:`TornadoSession <queries.tornado_session.TornadoSession>` classes
 providing environment variable based configuration.
 
-The environment variables should be set using the ``DBNAME_[VARIABLE]`` format
-where ``[VARIABLE]`` is one of  ``HOST``, ``PORT``, ``DBNAME``, ``USER``, and
-``PASSWORD``.
+Environment variables should be set using the ``PGSQL[_DBNAME]`` format
+where the value is a PostgreSQL URI.
 
-For example, given the environment variables:
+For PostgreSQL URI format, see:
+
+http://www.postgresql.org/docs/9.3/static/libpq-connect.html#LIBPQ-CONNSTRING
+
+As example, given the environment variable:
 
 .. code:: python
 
-    FOO_HOST = 'foodb'
-    FOO_PORT = '6000'
-    FOO_DBNAME = 'foo'
-    FOO_USER = 'bar'
-    FOO_PASSWORD = 'baz'
+    PGSQL_FOO = 'postgresql://bar:baz@foohost:6000/foo'
 
 and code for creating a :py:class:`Session` instance for the database name
 ``foo``:
@@ -26,11 +25,12 @@ and code for creating a :py:class:`Session` instance for the database name
 
     session = sprockets.postgresql.Session('foo')
 
-The uri ``postgresql://bar:baz@foodb:6000/foo`` will be used when creating the
-instance of :py:class:`queries.Session`.
+A :py:class:`queries.Session` object will be created that connects to Postgres
+running on ``foohost``, port ``6000`` using the username ``bar`` and the
+password ``baz``, connecting to the ``foo`` database.
 
 """
-version_info = (1, 0, 1)
+version_info = (2, 0, 0)
 __version__ = '.'.join(str(v) for v in version_info)
 
 import logging
@@ -66,27 +66,21 @@ from queries import TransactionRollbackError
 
 
 def _get_uri(dbname):
-    """Construct the URI for connecting to PostgreSQL by appending each
-    argument name to the dbname, delimited by an underscore and
-    capitalizing the new variable name.
-
-    Values will be retrieved from the environment variable and added to a
-    dictionary that is then passed in as keyword arguments to the
-    :py:meth:`queries.uri` method to build the URI string.
+    """Return the URI for the specified database name from an environment
+    variable. If dbname is blank, the ``PGSQL`` environment variable is used,
+    otherwise the database name is cast to upper case and concatenated to
+    ``PGSQL_`` and the URI is retrieved from ``PGSQL_DBNAME``. For example,
+    if the value ``foo`` is passed in, the environment variable used would be
+    ``PGSQL_FOO``.
 
     :param str dbname: The database name to construct the URI for
     :return: str
+    :raises: KeyError
 
     """
-    kwargs = dict()
-    for arg in _ARGUMENTS:
-        value = os.getenv(('%s_%s' % (dbname, arg)).upper())
-        if value:
-            if arg == 'port':
-                kwargs[arg] = int(value)
-            else:
-                kwargs[arg] = value
-    return queries.uri(**kwargs)
+    if not dbname:
+        return os.environ['PGSQL']
+    return os.environ['PGSQL_{0}'.format(dbname).upper()]
 
 
 class Session(queries.Session):
