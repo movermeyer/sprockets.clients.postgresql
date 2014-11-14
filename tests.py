@@ -11,7 +11,8 @@ except ImportError:
     import unittest
 
 from sprockets.clients import postgresql
-import queries
+import queries.pool
+import queries.tornado_session
 from tornado import testing
 
 
@@ -28,25 +29,38 @@ class TestGetURI(unittest.TestCase):
 class TestSession(unittest.TestCase):
 
     @mock.patch('queries.session.Session.__init__')
-    def setUp(self, mock_init):
-        self.mock_init = mock_init
+    def test_session_invokes_queries_session(self, mock_init):
         os.environ['PGSQL_TEST2'] = 'postgresql://foo:baz@db1:5433/bar'
         self.session = postgresql.Session('test2')
+        self.assertTrue(mock_init.called)
 
-    def test_session_invokes_queries_session(self):
-        self.assertTrue(self.mock_init.called)
+    @mock.patch('queries.session.Session.__init__')
+    def test_session_invokes_queries_session_with_url(self, mock_init):
+        self.session = postgresql.Session('test6',
+                                          db_url='postgresql://localhost/b')
+        mock_init.assert_called_once_with(
+            'postgresql://localhost/b', queries.RealDictCursor,
+            queries.pool.DEFAULT_IDLE_TTL, queries.pool.DEFAULT_MAX_SIZE,
+        )
 
 
 class TestTornadoSession(unittest.TestCase):
 
     @mock.patch('queries.tornado_session.TornadoSession.__init__')
-    def setUp(self, mock_init):
-        self.mock_init = mock_init
+    def test_session_invokes_queries_session(self, mock_init):
         os.environ['PGSQL_TEST3'] = 'postgresql://foo:baz@db1:5434/bar'
         self.session = postgresql.TornadoSession('test3')
+        self.assertTrue(mock_init.called)
 
-    def test_session_invokes_queries_session(self):
-        self.assertTrue(self.mock_init.called)
+    @mock.patch('queries.tornado_session.TornadoSession.__init__')
+    def test_session_invokes_queries_session_with_url(self, mock_init):
+        self.session = postgresql.TornadoSession(
+            'test7', db_url='postgresql://localhost/b')
+        mock_init.assert_called_once_with(
+            'postgresql://localhost/b', queries.RealDictCursor,
+            queries.pool.DEFAULT_IDLE_TTL,
+            queries.tornado_session.DEFAULT_MAX_POOL_SIZE, None,
+        )
 
 
 class SessionIntegrationTests(unittest.TestCase):
