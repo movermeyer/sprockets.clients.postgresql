@@ -95,13 +95,18 @@ class Session(queries.Session):
     :param queries.cursor: The cursor type to use
     :param int pool_idle_ttl: How long idle pools keep connections open
     :param int pool_max_size: The maximum size of the pool to use
+    :param str db_url: Optional database connection URL.  Use this when
+        you need to connect to a database that is only known at runtime.
 
     """
     def __init__(self, dbname,
                  cursor_factory=queries.RealDictCursor,
                  pool_idle_ttl=pool.DEFAULT_IDLE_TTL,
-                 pool_max_size=pool.DEFAULT_MAX_SIZE):
-        super(Session, self).__init__(_get_uri(dbname),
+                 pool_max_size=pool.DEFAULT_MAX_SIZE,
+                 db_url=None):
+        if db_url is None:
+            db_url = _get_uri(dbname)
+        super(Session, self).__init__(db_url,
                                       cursor_factory,
                                       pool_idle_ttl,
                                       pool_max_size)
@@ -125,14 +130,18 @@ class TornadoSession(tornado_session.TornadoSession):
     :param int pool_max_size: The maximum size of the pool to use
     :param tornado.ioloop.IOLoop ioloop: Pass in the instance of the tornado
         IOLoop you would like to use. Defaults to the global instance.
+    :param str db_url: Optional database connection URL.  Use this when
+        you need to connect to a database that is only known at runtime.
 
     """
     def __init__(self, dbname,
                  cursor_factory=queries.RealDictCursor,
                  pool_idle_ttl=pool.DEFAULT_IDLE_TTL,
                  pool_max_size=tornado_session.DEFAULT_MAX_POOL_SIZE,
-                 io_loop=None):
-        super(TornadoSession, self).__init__(_get_uri(dbname),
+                 io_loop=None, db_url=None):
+        if db_url is None:
+            db_url = _get_uri(dbname)
+        super(TornadoSession, self).__init__(db_url,
                                              cursor_factory,
                                              pool_idle_ttl,
                                              pool_max_size,
