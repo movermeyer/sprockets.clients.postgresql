@@ -54,8 +54,8 @@ Available at https://sprocketsclientspostgresql.readthedocs.org/en/latest/histor
 .. |Coverage| image:: https://img.shields.io/coveralls/sprockets/sprockets.clients.postgresql.svg?
    :target: https://coveralls.io/r/sprockets/sprockets.clients.postgresql
 
-.. |Downloads| image:: https://pypip.in/d/sprockets.clients.postgresql/badge.svg?
+.. |Downloads| image:: https://img.shields.io/pypi/dm/sprockets.clients.postgresql.svg
    :target: https://pypi.python.org/pypi/sprockets.clients.postgresql
 
-.. |License| image:: https://pypip.in/license/sprockets.clients.postgresql/badge.svg?
+.. |License| image:: https://img.shields.io/pypi/l/sprockets.clients.postgresql.svg
    :target: https://sprocketsclientspostgresql.readthedocs.org
